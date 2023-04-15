@@ -1,31 +1,58 @@
-﻿
-Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 17
-VisualStudioVersion = 17.5.33530.505
-MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Implementacion de Libreria", "Implementacion de Libreria\Implementacion de Libreria.vcxproj", "{EC76C619-69C0-46BD-80DF-3E069BF190CC}"
-EndProject
-Global
-	GlobalSection(SolutionConfigurationPlatforms) = preSolution
-		Debug|x64 = Debug|x64
-		Debug|x86 = Debug|x86
-		Release|x64 = Release|x64
-		Release|x86 = Release|x86
-	EndGlobalSection
-	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Debug|x64.ActiveCfg = Debug|x64
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Debug|x64.Build.0 = Debug|x64
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Debug|x86.ActiveCfg = Debug|Win32
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Debug|x86.Build.0 = Debug|Win32
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Release|x64.ActiveCfg = Release|x64
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Release|x64.Build.0 = Release|x64
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Release|x86.ActiveCfg = Release|Win32
-		{EC76C619-69C0-46BD-80DF-3E069BF190CC}.Release|x86.Build.0 = Release|Win32
-	EndGlobalSection
-	GlobalSection(SolutionProperties) = preSolution
-		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {04A7178B-9A3E-4742-8768-D49D57BF4097}
-	EndGlobalSection
-EndGlobal
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <filesystem> // Librería filesystem.h para operaciones de archivo y directorio
+#include <windows.h> // Librería windows.h para utilizar la función 
+
+using namespace std;
+
+int main() {
+    int numArchivos;
+    cout << "Ingrese la cantidad de archivos que desea crear: ";
+    cin >> numArchivos;
+
+    // Crear archivos
+    for (int i = 1; i <= numArchivos; i++) {
+        // Generar el nombre del archivo en base al contador
+        string nombreArchivo = "archivo" + to_string(i) + ".txt";
+        // Crear un objeto ofstream para escribir en el archivo
+        ofstream archivo(nombreArchivo);
+
+        // Verificar si el archivo se abrió correctamente
+        if (archivo.is_open()) {
+            // Escribir texto dentro del archivo
+            archivo << "Texto dentro del archivo " << nombreArchivo << endl;
+            // Cerrar el archivo
+            archivo.close();
+            cout << "Archivo " << nombreArchivo << " fue creado exitosamente." << endl;
+        }
+        else {
+            cout << "No se pudo crear el archivo " << nombreArchivo << endl;
+        }
+    }
+
+    // Contar archivos y mostrar resultado
+    int numArchivosCreados = 0;
+    ifstream archivo;
+    string nombreArchivo;
+    while (numArchivosCreados < numArchivos) {
+        // Generar el nombre del archivo en base al contador
+        nombreArchivo = "archivo" + to_string(numArchivosCreados + 1) + ".txt";
+        // Abrir el archivo en modo lectura
+        archivo.open(nombreArchivo);
+        if (archivo.is_open()) {
+            // Si se pudo abrir, incrementar el contador de archivos creados
+            numArchivosCreados++;
+            archivo.close();
+        }
+        else {
+            // Si no se pudo abrir, salir del ciclo
+            break;
+        }
+    }
+
+    // Mostrar el resultado del conteo de archivos
+    cout << "Se crearon " << numArchivosCreados << " archivos." << endl;
+
+    return 0;
+}
